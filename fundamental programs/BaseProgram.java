@@ -221,12 +221,10 @@ public class BaseProgram {
 
     // Check given number is prime or not
     public static boolean isPrime(int number) {
-        if (number < 2)
-            return false;
-        if (number <= 3)
-            return true;
-        if (number % 2 == 0 || number % 3 == 0)
-            return false;
+        for (int i = 2; i <= (number / 2); i++) {
+            if (number % i == 0)
+                return false;
+        }
         return true;
     }
 
@@ -242,6 +240,7 @@ public class BaseProgram {
         }
     }
 
+    // Sum of all factors of a number.
     public static int sumOfAllFactors(int number) {
         int sum = 0;
         int factor = 2;
@@ -323,23 +322,23 @@ public class BaseProgram {
     }
 
     // Sum of even indexed Fibonacci Numbers.
-    // public static int sumOfEvenIndexedFibonacci(int lastTerm) {
-    // int[] arr = new int[(lastTerm / 2) + 1];
-    // int sum = 0;
-    // int a = 0, b = 1;
-    // if (lastTerm == 1)
-    // sum = 0;
-    // if (lastTerm >= 2)
-    // sum += lastTerm;
-    // for (int i = 0; i < lastTerm - 2; i++) {
-    // int c = b;
-    // b = a + b;
-    // System.out.print(b + ", ");
-    // a = c;
-    // }
+    public static int sumOfEvenIndexOfFibonacci(int lastIndex) {
+        int sum = 0;
+        int first = 0;
+        int second = 1;
+        if (lastIndex < 2)
+            return sum;
 
-    // return sum;
-    // }
+        for (int i = 2; i <= lastIndex; i++) {
+            int value = first + second;
+            first = second;
+            second = value;
+            if (i % 2 == 0) {
+                sum += second;
+            }
+        }
+        return sum;
+    }
 
     // Separate digits of a number.
     public static void separateDigitsOfNumber(int number) {
@@ -412,6 +411,25 @@ public class BaseProgram {
         System.out.println(sq % Math.pow(10, count) == oldVal ? "Automorphic" : "Not automorphic");
     }
 
+    // Find the highest common factor of two numbers
+    public static void findHighestCommonFactor(int a, int b) {
+        // a = 8 b = 23
+        if (isPrime(a) || isPrime(b)) {
+            System.out.println("HCF is 1.");
+        } else {
+            int min = Math.min(a, b);
+            int max = Math.max(a, b);
+
+            int hcf = 1;
+            for (int i = 2; i < min; i++) {
+                if (max % i == 0 && min % i == 0) {
+                    hcf = i;
+                }
+            }
+            System.out.println(hcf);
+        }
+    }
+
     // Check a number is harshad (Niven) number or not.
     public static void isHarshadNumber(int number) {
         int oldVal = number;
@@ -425,9 +443,28 @@ public class BaseProgram {
     }
 
     // Check if a number is a perfect square.
-    // public static boolean isPerfectSquare(int number) {
+    public static boolean isPerfectSquare(int num) {
+        if (num < 0)
+            return false; // Negative numbers are not perfect squares
+        if (num == 0 || num == 1)
+            return true; // 0 and 1 are perfect squares
 
-    // }
+        int low = 1, high = num;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2; // Avoids overflow
+            long square = (long) mid * mid; // Use long to avoid overflow
+
+            if (square == num)
+                return true; // Found perfect square
+            else if (square < num)
+                low = mid + 1; // Search right side
+            else
+                high = mid - 1; // Search left side
+        }
+
+        return false; // No perfect square found
+    }
 
     // Abundant number checker.
     public static void isAbundantNumber(int number) {
@@ -456,27 +493,6 @@ public class BaseProgram {
     }
 
     // Validate ISBN number.
-    // public static boolean isValidISBN(long number) {
-    // if(String.valueOf(number).length() < 10) {
-    // return false;
-    // }
-
-    // int i = 1;
-    // long product = 1;
-    // long sum = 0;
-    // while (number >= 1) {
-    // long lastDigit = number % 10;
-    // product = lastDigit * i;
-    // sum += product;
-    // product = 0;
-    // number /= 10;
-    // i++;
-    // }
-
-    // if(sum % 11 == 0) return true;
-
-    // return false;
-    // }
 
     // Write a program that repeatedly prints 'hello' until the user provides
     // incorrect input using a while loop.
@@ -769,26 +785,29 @@ public class BaseProgram {
         System.out.println(Arrays.toString(arr));
     }
 
-    // Write a program to accept an array and a key. Print the index if found in an array else print -1 using linear search.
+    // Write a program to accept an array and a key. Print the index if found in an
+    // array else print -1 using linear search.
     public static int linearSearch(int[] arr, int key) {
         for (int i = 0; i < arr.length; i++) {
-            if ( key == arr[i]) {
+            if (key == arr[i]) {
                 return i;
-            }   
+            }
         }
         return -1;
     }
 
-    // Write a program to accept an array and a key. Print the index if found in an array else print -1 Using binary search.
+    // Write a program to accept an array and a key. Print the index if found in an
+    // array else print -1 Using binary search.
     public static int binarySearch(int[] arr, int key) {
         int size = arr.length;
         int st = 0, end = size - 1;
         while (st <= end) {
             int mid = st + (end - st) / 2;
-            if(key == arr[mid]) return mid;
-            if(key > arr[mid]) {
+            if (key == arr[mid])
+                return mid;
+            if (key > arr[mid]) {
                 st = mid + 1;
-            }else {
+            } else {
                 end = mid - 1;
             }
 
@@ -796,10 +815,226 @@ public class BaseProgram {
         return -1;
     }
 
-    
+    // Write a program to accept an array and sort the elements in ascending order
+    // using bubble sort.
+    public static void bubbleSort(int[] arr) {
+        int s = arr.length;
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int val = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = val;
+                }
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    // Write a program to accept an array and sort the elements in ascending order
+    // using Insertion sort. Hint: let two or more than two values are sorted
+    // already.start the loop from unsorted element and innerloop from same place
+    // but in reverse direction.
+    public static void insertionSort(int[] arr) {
+        int size = arr.length;
+        for (int i = 1; i < size; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j--];
+            }
+            arr[j + 1] = key;
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    // Write a program to accept an array and sort the elements in ascending order
+    // using Selection sort.
+    public static void selectionSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int sm = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[sm] > arr[j]) {
+                    sm = j;
+                }
+            }
+            if (i != sm) {
+                int temp = arr[i];
+                arr[i] = arr[sm];
+                arr[sm] = temp;
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    // Write a program to accept an array and target. Print the count of subarrays whose element sum is equal to the target.
+    public static void sumOfSubArrays(int[] arr, int target) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i; j < arr.length; j++) {
+                System.out.print(arr[j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // Given an array of integers. move all zeroes to the end of the array. You can
+    // use extra space to perform this operation.
+    public static void moveZerosWithExtraSpace(int[] arr) {
+        int size = arr.length;
+        int i = 0, j = size - 1;
+        while (i < j) {
+            if (arr[i] == 0 && arr[j] == 1) {
+                int holdVal = arr[i];
+                arr[i++] = arr[j];
+                arr[j--] = holdVal;
+            }
+            if (arr[i] == 1 && arr[j] == 0) {
+                i++;
+                j--;
+            }
+            if (arr[i] == 1 && arr[j] == 1) {
+                i++;
+            }
+            if (arr[i] == 0 && arr[j] == 0) {
+                j--;
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    // Given an array of integers. move all zeroes to the end of the array, perform
+    // this operation without any extra space.
+    public static void moveZerosWithoutExtraSpace(int[] arr) {
+        int size = arr.length;
+        int i = 0, j = size - 1;
+        while (i < j) {
+            while (i < j && arr[i] == 1)
+                i++;
+            while (i < j && arr[j] == 0)
+                j--;
+            if (i < j) {
+                arr[i++] = 1;
+                arr[j--] = 0;
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    // Concatenate two same array in one array.
+    public static void concatenateTwoArrays(int[] arr1, int[] arr2) {
+        int s1 = arr1.length, s2 = arr2.length;
+        int[] bigArr = new int[s1 + s2];
+        for (int i = 0; i < bigArr.length - s2; i++) {
+            bigArr[i] = arr1[i];
+        }
+        for (int i = s1; i < bigArr.length; i++) {
+            bigArr[i] = arr2[i - s2 - 1];
+        }
+        System.out.println(Arrays.toString(bigArr));
+    }
+
+    // You are given an array nums which is a zero-based permutation (each element
+    // is distinct and ranges from 0 to nums.length - 1). Your task is to create a
+    // new array ans where each element ans[i] is equal to nums[nums[i]] for every i
+    // from 0 to nums.length - 1. Finally, return the array ans.
+
+    // Given a sorted array of distinct elements, the task is to find the summation
+    // of the absolute differences of all pairs in the array.
+
+    // Questions of String
+    // Accept a string from the user and print each character on a new line.
+    public static void printEachCharacterOnNewLine(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            System.out.println(str.charAt(i));
+        }
+    }
+
+    // Accept a string and print it in reverse order.
+    public static void printReverseOrderOfString(String str) {
+        for (int i = str.length() - 1; i >= 0; i--) {
+            System.out.print(str.charAt(i));
+        }
+    }
+
+    // Check if the string is palindrominc or not.
+    public static void isStringPalindromic(String str) {
+        String s = "";
+        for (int i = str.length() - 1; i >= 0; i--) {
+            s += str.charAt(i);
+        }
+        System.out.println(str.equals(s) ? "Palindrome" : "Not palindrome");
+    }
+
+    // Accept a string and count the numbers of vowels, consonant and spaces.
+    public static void countVowelsConsonantSpaces(String str) {
+        int v = 0, c = 0, s = 0;
+        for (char ch : str.toCharArray()) {
+            switch (ch) {
+                case 'a', 'e', 'i', 'o', 'u':
+                    v++;
+                    break;
+                case ' ':
+                    s++;
+
+                default:
+                    c++;
+                    break;
+            }
+        }
+        System.out.println("The vowels are " + v + " and consonants are " + c + " and spaces are " + s);
+    }
+
+    // Accept a string and toggle each character of it and form a new string.
+    public static void toggleCharacters(String str) {
+        String s = "";
+        for (char ch : str.toCharArray()) {
+            if (ch < 97)
+                s += (char) (ch + 32);
+            else
+                s += (char) (ch - 32);
+        }
+        System.out.println(s);
+    }
+
+    // Take an array of string word and a string pref. Print the numbers of strings
+    // in words that contains pref as prefix.
+    public static void includes(String[] str, String pref) {
+        int count = 0;
+        for (int i = 0; i < str.length; i++) {
+            if (str[i].startsWith(pref)) {
+                count++;
+            }
+        }
+        System.out.println(count);
+    }
+
+    // Accept a space separated sentece and split it into words. Print each word in
+    // a new line with the first letter capitalized.
+    // public static void splitAndPrintWords(String str) {
+    // String[] s = str.split(" ");
+    // for (int i = 0; i < s.length; i++) {
+    // if(s[i].charAt(0) > 96) {
+    // System.out.println(s[i]);
+    // }
+    // }
+    // }
+
+    // Accept a string and print the frequency of each character present in the
+    // string.
+    // public static void printFrequencyOfEachCharacter(String str) {
+    // for (char ch : str.toCharArray()) {
+
+    // }
+    // }
+
+    // Given two strings s and t. Print true if t is an anagram of s and false
+    // otherwise.
+    // public static boolean isStringAnagram(String str) {
+
+    // }
 
     public static void main(String[] args) {
-        int[] arr = { 1, 2, 3, 4, 5 };
-        System.out.println(binarySearch(arr, 5));
+        int[] arr = { 1,2,3,7,5 };
+        sumOfSubArrays(arr, 12);
     }
 }
