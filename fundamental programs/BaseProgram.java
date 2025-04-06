@@ -1,6 +1,8 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
+import javax.lang.model.util.Elements;
+
 public class BaseProgram {
 
     // Sum of two integers.
@@ -867,14 +869,20 @@ public class BaseProgram {
         System.out.println(Arrays.toString(arr));
     }
 
-    // Write a program to accept an array and target. Print the count of subarrays whose element sum is equal to the target.
+    // Write a program to accept an array and target. Print the count of subarrays
+    // whose element sum is equal to the target.
     public static void sumOfSubArrays(int[] arr, int target) {
+        int count = 0;
         for (int i = 0; i < arr.length; i++) {
+            int sum = 0;
             for (int j = i; j < arr.length; j++) {
-                System.out.print(arr[j] + " ");
+                sum += arr[j];
+                if (sum == target)
+                    count++;
             }
-            System.out.println();
+
         }
+        System.out.println(count);
     }
 
     // Given an array of integers. move all zeroes to the end of the array. You can
@@ -933,13 +941,38 @@ public class BaseProgram {
         System.out.println(Arrays.toString(bigArr));
     }
 
-    // You are given an array nums which is a zero-based permutation (each element
-    // is distinct and ranges from 0 to nums.length - 1). Your task is to create a
-    // new array ans where each element ans[i] is equal to nums[nums[i]] for every i
+    // You are given an array nums which is a zero-based permutation (each elementis
+    // distinct and ranges from 0 to nums.length - 1). Your task is to create a new
+    // array ans where each element ans[i] is equal to nums[nums[i]] for every i
     // from 0 to nums.length - 1. Finally, return the array ans.
+    public static int[] operationsOnArray(int[] arr) {  // 2, 0, 1, 3, 4
+        int[] ans = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            ans[i] = arr[arr[i]];
+        }
+        return ans;
+    }
 
     // Given a sorted array of distinct elements, the task is to find the summation
     // of the absolute differences of all pairs in the array.
+    public static long summationOfPairsOfArrayElements(int[] arr) {
+        int n = arr.length;
+        long sum = 0;
+        long prefixSum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += (arr[i] * i) - prefixSum;
+            prefixSum += arr[i];
+        }
+        return sum;
+    }
+
+    // Given an integer array A[] and a character array B[] of equal lengths where every character of the array is from the set {‘a’, ‘b’, ‘c’}. Elements of both arrays are associated with each other i.e. the value of B[i] is linked to A[i] for all valid values of i. The task is to find the value min(a + b, c).
+    public void name() {
+        
+    }
+
+
+
 
     // Questions of String
     // Accept a string from the user and print each character on a new line.
@@ -1034,7 +1067,6 @@ public class BaseProgram {
     // }
 
     public static void main(String[] args) {
-        int[] arr = { 1,2,3,7,5 };
-        sumOfSubArrays(arr, 12);
+        int[] arr = { 2, 0, 3, 1, 4 };
     }
 }
